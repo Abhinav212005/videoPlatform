@@ -1,1 +1,1 @@
-export const DB_name = "fullstacklearning";
+export const DB_name = "videotube";

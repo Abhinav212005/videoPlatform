@@ -49,10 +49,9 @@ const userSchema = new Schema({
     timestamps: true
 });
 
-userSchema.pre("save", async function (next) { //why we didn't used arrow function here because we need to access the user document using 'this' keyword and arrow function doesn't have its own 'this' context, it uses the 'this' value from the enclosing lexical context, so we can't use arrow function here because we need to access the user document using 'this' keyword
-    if (!this.isModified("password")) return next(); // If password is not modified, skip hashing
+userSchema.pre("save", async function () { //why we didn't used arrow function here because we need to access the user document using 'this' keyword and arrow function doesn't have its own 'this' context, it uses the 'this' value from the enclosing lexical context, so we can't use arrow function here because we need to access the user document using 'this' keyword
+    if (!this.isModified("password")) return; // If password is not modified, skip hashing
     this.password = await bcrypt.hash(this.password, 10); // here 10 is the salt rounds, you can adjust it as needed and it will take more time to hash the password with higher salt rounds but it will be more secure
-    next(); // Call next to proceed with saving the user
 })
 
 userSchema.methods.isPasswordCorrect = async function (password) {
